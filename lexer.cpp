@@ -7,36 +7,59 @@
 vector<Token> Lexer::getTokens(istream& in) {
     vector<Token> tokens;
 
-    int nextCh = in.peek();
-    if (isalpha(nextCh)) {
-        Token identifier = readKeyword(in);
-        tokens.push_back(identifier);
-    }
-    else if (isdigit(nextCh)) {
-        Token intOrFloat = readIntOrFloat(in);
-        tokens.push_back(intOrFloat);
-    }
-    else if (nextCh == '"') {
-        Token string = readString(in);
-        tokens.push_back(string);
+    in.peek(); // When input stream is empty turn eof bit on
+    while (! in.eof()) {
+        char nextCh = (in >> ws).peek();
+        if (isalpha(nextCh)) {
+            Token string = readKeywordOrIdentifier(in);
+            tokens.push_back(string);
+        }
+        else if (isdigit(nextCh)) {
+            Token intOrFloat = readIntOrFloat(in);
+            tokens.push_back(intOrFloat);
+        }
+        else if (nextCh == '"') {
+            Token string = readString(in);
+            tokens.push_back(string);
+        }
+        else if (isSeparator((char) nextCh)) {
+            Token separator = readSeparator(in);
+            tokens.push_back(separator);
+        }
+        else if (isOperator((char) nextCh)) {
+            Token _operator = readOperator(in);
+            tokens.push_back(_operator);
+        }
+        else {
+            stringstream message;
+            message << "Unknown symbol '" << nextCh << "'";
+            throw UnknownSymbolException(message.str());
+        }
     }
 
     return tokens;
 }
 
-Token Lexer::readKeyword(istream& in) {
-    string identifier;
+Token Lexer::readKeywordOrIdentifier(istream& in) {
+    Token token;
 
     char c;
     while(in.get(c)) {
         if (isalpha(c) || isdigit(c)) {
-            identifier += c;
+            token.token += c;
         } else {
+            in.unget();
             break;
         }
     }
 
-    return {identifier, KEYWORD};
+    if (token.token == "const") {
+        token.kind = KEYWORD;
+    } else {
+        token.kind = IDENTIFIER;
+    }
+
+    return token;
 }
 
 Token Lexer::readIntOrFloat(istream& in) {
@@ -53,6 +76,7 @@ Token Lexer::readIntOrFloat(istream& in) {
             token.kind = FLOAT;
         }
         else {
+            in.unget();
             break;
         }
     }
@@ -80,4 +104,48 @@ Token Lexer::readString(istream& in) {
     token.kind = STRING;
 
     return token;
+}
+
+Token Lexer::readSeparator(istream& in) {
+    Token token;
+    token.kind = SEPARATOR;
+
+    char c;
+    while (in.get(c)) {
+        if (c == ';') {
+            token.token += c;
+        }
+        else {
+            in.unget();
+            break;
+        }
+    }
+
+    return token;
+}
+
+bool Lexer::isSeparator(char c) {
+    return c == ';';
+}
+
+Token Lexer::readOperator(istream& in) {
+    Token token;
+    token.kind = OPERATOR;
+
+    char c;
+    while (in.get(c)) {
+        if (c == '=') {
+            token.token += c;
+        }
+        else {
+            in.unget();
+            break;
+        }
+    }
+
+    return token;
+}
+
+bool Lexer::isOperator(char c) {
+    return c == '=';
 }

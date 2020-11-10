@@ -10,14 +10,17 @@
 #include <vector>
 #include <cctype>
 #include <sstream>
-#include <iostream> // TODO: Temporary
+#include "exceptions.h"
 using namespace std;
 
 enum TokenKind {
     STRING,
     KEYWORD,
     INTEGER,
-    FLOAT
+    FLOAT,
+    IDENTIFIER,
+    SEPARATOR,
+    OPERATOR
 };
 
 struct Token {
@@ -33,9 +36,14 @@ private:
     istream s;
     vector<Token> tokens;
 
-    static Token readKeyword(istream&);
+    static Token readKeywordOrIdentifier(istream&);
     static Token readIntOrFloat(istream&);
     static Token readString(istream&);
+    static Token readSeparator(istream&);
+    static Token readOperator(istream&);
+
+    static bool isSeparator(char c);
+    static bool isOperator(char c);
 };
 
 

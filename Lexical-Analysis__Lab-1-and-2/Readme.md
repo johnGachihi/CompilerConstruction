@@ -1,5 +1,5 @@
 #### Lab 1
-The source code for the implementation of a simple lexical analysis is in the files:
+The source code for the implementation of a simple lexical analyser is in the files:
 - [lexer.cpp](lexer.cpp)
 - [lexer.h](lexer.h)
 

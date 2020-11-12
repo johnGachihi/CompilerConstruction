@@ -46,8 +46,9 @@ string tokenKindToString(TokenKind);
      *      ["string", string],
      * }
      *
-     * The output contains a list of tokens as seen in the code and
+     * The output contains a list of tokens as they are in the code and
      * the token type for each token.
+     *
      */
 int main() {
     fstream mFile("source.jl", ios_base::in | ios_base::out | ios_base::trunc);

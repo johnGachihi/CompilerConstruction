@@ -29,7 +29,7 @@ string tokenKindToString(TokenKind);
      * input stream for a file containing the following code:
      *      const a = 234;
      *      const a1 = "string";
-     * It breaks down this code into JohnLang tokens and identifies
+     * It breaks down this code into JohnLang tokens and identifies/classifies
      * what kind of token each one is.
      * As output, the Lexical Analyser gives a list of tokens that may
      * be represented as follows;
@@ -47,10 +47,10 @@ string tokenKindToString(TokenKind);
      * }
      *
      * The output contains a list of tokens as seen in the code and
-     * the token type for each token.,
+     * the token type for each token.
      */
 int main() {
-    fstream mFile("source.jg", ios_base::in | ios_base::out | ios_base::trunc);
+    fstream mFile("source.jl", ios_base::in | ios_base::out | ios_base::trunc);
     mFile << "const a = 234;\nconst a1 = \"string\"";
     mFile.seekg(0);
 

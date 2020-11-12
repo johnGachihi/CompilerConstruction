@@ -3,6 +3,4 @@ project(CompilerConstruction)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(CompilerConstruction main.cpp lexer.cpp lexer.h exceptions.h)
-
-add_subdirectory(Google_tests)
+add_subdirectory(Lexical-Analysis__Lab-1-and-2)

@@ -9,6 +9,23 @@ Tested on Ubuntu
 To run:
 ```
 flex -+ helloFlex.l
-g++ lex.yy.cc -o johnlang
-./johnlang < source.jl
+g++ lex.yy.cc -o johnlangc
+./johnlangc < source.jl
+```
+
+Output should be:
+```
+[
+        [const, keyword]
+        [abc3, identifier]
+        [=, operator]
+        ["abc", string]
+        [;, separator]
+        [const, keyword]
+        [a, identifier]
+        [=, operator]
+        [123, integer]
+        [;, separator]
+]
+
 ```
